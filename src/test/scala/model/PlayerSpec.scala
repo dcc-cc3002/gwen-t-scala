@@ -2,35 +2,36 @@ package cl.uchile.dcc.gwent
 package model
 
 import exceptions.{IllegalActionException, InvalidValueException}
-
-import cl.uchile.dcc.gwent.model.cards.Card
+import model.cards.Deck
 
 class PlayerSpec extends AbstractGwentSpec {
   private val name = "Player 1"
+  private var deck: Deck = _
   private var player: Player = _
 
   before {
-    player = new Player(name)
     initCards()
+    deck = new Deck(cards.toList)
+    player = new Player(name, deck)
   }
 
   test("Two players with the same name are equal") {
-    val otherPlayer = new Player(name)
+    val otherPlayer = new Player(name, deck)
     player should be(otherPlayer)
   }
 
   test("Two players with different names are not equal") {
-    val otherPlayer = new Player("Player 2")
+    val otherPlayer = new Player("Player 2", deck)
     player should not be otherPlayer
   }
 
   test("Two players with the same name have the same hash code") {
-    val otherPlayer = new Player(name)
+    val otherPlayer = new Player(name, deck)
     player.hashCode() should be(otherPlayer.hashCode())
   }
 
   test("Two players with different names have different hash codes") {
-    val otherPlayer = new Player("Player 2")
+    val otherPlayer = new Player("Player 2", deck)
     player.hashCode() should not be otherPlayer.hashCode()
   }
 
@@ -54,25 +55,9 @@ class PlayerSpec extends AbstractGwentSpec {
     }
   }
 
-  test("A player should start with 0 cards in its deck") {
-    player.deck.length should be(0)
-  }
-
-  test("Cards can be added to a player's deck") {
-    player.deck.length should be(0)
-    for (i <- cards.indices) {
-      player.addToDeck(cards(i))
-      player.deck.length should be(i + 1)
-    }
-    player.deck should be(cards)
-  }
-
-  test("A player's deck cannot have more than 25 cards") {
-    for (_ <- 1 to 25) {
-      player.addToDeck(cards.head)
-    }
-    an[IllegalActionException] should be thrownBy {
-      player.addToDeck(cards.head)
-    }
+  test("The player can shuffle their deck") {
+    val otherDeck = player.deck
+    player.shuffleDeck()
+    player.deck should not be otherDeck
   }
 }

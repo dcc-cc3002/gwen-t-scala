@@ -7,18 +7,22 @@ import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.should
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
+import scala.collection.mutable.ListBuffer
+
 class AbstractGwentSpec
     extends AnyFunSuite
     with ScalaCheckPropertyChecks
     with BeforeAndAfter
     with should.Matchers {
-  protected var cards: List[Card] = _
+  protected var cards: ListBuffer[Card] = _
 
+  /**
+   * Initializes the cards used in the tests.
+   */
   def initCards(): Unit = {
-    cards = List(
-      new Card("Sheldon Skaggs", 2, 4),
-      new Card("Sigismund Dijkstra", 1, 1),
-      new Card("Siege technician", 3, 0)
-    )
+    cards = ListBuffer.empty  // We crete an empty list of cards.
+    for (i <- 1 to 25) {  // We add 25 cards to the list.
+      cards += new Card("Card " + i, i % 3, 1)
+    }
   }
 }

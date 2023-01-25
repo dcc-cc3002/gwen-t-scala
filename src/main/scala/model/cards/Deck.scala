@@ -1,6 +1,8 @@
 package cl.uchile.dcc.gwent
 package model.cards
 
+import scala.util.Random
+
 /** A deck of cards.
   *
   * @constructor create a new deck with no cards.
@@ -9,14 +11,33 @@ package model.cards
   * @since 1.0
   * @version 1.0
   */
-class Deck {
+class Deck(val random: Random) {
   private var _cards: List[Card] = List()
 
-  def this(cards: List[Card]) = {
-    this()
+  /** Creates a new deck with the given cards.
+    *
+    * @param cards The cards to add to the deck.
+    */
+  def this(cards: List[Card], random: Random = new Random()) = {
+    this(random)
     _cards = cards
   }
 
+  // region : Properties
+  /** Returns the number of cards in the deck. */
+  def size: Int = _cards.size
+
+  /** Returns the cards in the deck. */
+  def cards: List[Card] = _cards
+  // endregion
+
+  def copy(): Deck = new Deck(_cards)
+
+  def shuffle(): Unit = {
+    _cards = random.shuffle(_cards)
+  }
+
+  // region : Operators
   /** Adds a card to the deck.
     *
     * @param card The card to add.
@@ -32,7 +53,5 @@ class Deck {
   def -=(card: Card): Unit = {
     _cards = _cards.filterNot(_ == card)
   }
-
-  /** Returns the cards in the deck. */
-  def cards: List[Card] = _cards
+  // endregion
 }

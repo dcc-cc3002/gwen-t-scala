@@ -1,37 +1,44 @@
 package cl.uchile.dcc.gwent
 package model
 
-import exceptions.{IllegalActionException, InvalidValueException}
-
-import cl.uchile.dcc.gwent.model.cards.Card
+import exceptions.InvalidValueException
+import model.cards.Deck
 
 import java.util.Objects
-import scala.collection.mutable.ArrayBuffer
 
 /** A class that holds the information of a player.
-  *
-  * @param name The name of the player.
-  * @constructor Creates a new player with the given name.
   *
   * @author <a href="https://github.com/r8vnhill">R8V</a>,
   *         ~Your name~
   * @since 1.0
   * @version 1.0
   */
-class Player(val name: String) {
+class Player private {
   private var _gemCounter: Int = 0
+  private var _name: String = _
+  private var _deck: Deck = _
 
-  private val _deck = ArrayBuffer[Card]()
-
-  /** Adds a card to the player's deck. */
-  def addToDeck(card: Card): Unit = {
-    if (_deck.length >= 25) {
-      throw new IllegalActionException("The player's deck is full.")
+  /** Creates a new player with a name and a deck.
+    *
+    * @param name The name of the player.
+    * @param deck The deck of the player.
+    */
+  def this(name: String, deck: Deck) = {
+    this()
+    if (deck.size != 25) { // Is it correct for the size restriction to be checked by the player?
+      throw new InvalidValueException("The deck must start with 25 cards.")
     }
-    _deck += card
+    _name = name
+    _deck = deck
   }
 
-  // region : Accessors
+  // region : Properties
+  /** Returns the name of the player. */
+  def name: String = _name
+
+  /** Returns a copy of the deck of the player. */
+  def deck: Deck = _deck.copy()
+
   /** Returns the number of rounds won by the player. */
   def gemCounter: Int = _gemCounter
 
@@ -46,11 +53,14 @@ class Player(val name: String) {
     }
     _gemCounter = gems
   }
-
-  /** Returns a copy of the player's deck. */
-  def deck: Array[Card] = _deck.toArray
   // endregion
 
+  /** Shuffles the deck of the player. */
+  def shuffleDeck(): Unit = {
+    _deck.shuffle()
+  }
+
+  // region: Equals, hashCode, toString
   override def equals(obj: Any): Boolean = {
     obj match {
       case player: Player => player.name == name
@@ -59,4 +69,7 @@ class Player(val name: String) {
   }
 
   override def hashCode(): Int = Objects.hash(classOf[Player], name)
+
+  override def toString: String = s"Player(name='$name', gemCounter=$gemCounter)"
+  // endregion
 }
