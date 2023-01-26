@@ -1,6 +1,7 @@
 package cl.uchile.dcc.gwent
 
-import model.cards.Card
+import model.cards.{Card, Deck}
+import model.Player
 
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.BeforeAndAfter
@@ -15,14 +16,22 @@ class AbstractGwentSpec
     with BeforeAndAfter
     with should.Matchers {
   protected var cards: ListBuffer[Card] = _
+  protected val player1Name: String = "Player 1"
 
-  /**
-   * Initializes the cards used in the tests.
-   */
-  def initCards(): Unit = {
-    cards = ListBuffer.empty  // We crete an empty list of cards.
-    for (i <- 1 to 25) {  // We add 25 cards to the list.
+  /** Initializes the cards used in the tests.
+    */
+  def createCards(): List[Card] = {
+    cards = ListBuffer.empty // We crete an empty list of cards.
+    for (i <- 1 to 25) { // We add 25 cards to the list.
       cards += new Card("Card " + i, i % 3, 1)
     }
+    cards.toList
+  }
+
+  /** Initializes the player used in the tests.
+    */
+  def createPlayer(name: String, cards: List[Card]): Player = {
+    val deck = new Deck(cards)
+    new Player(name, deck)
   }
 }

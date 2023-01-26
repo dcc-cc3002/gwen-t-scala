@@ -1,8 +1,8 @@
 package cl.uchile.dcc.gwent
 package model
 
-import exceptions.InvalidValueException
-import model.cards.Deck
+import exceptions.{IllegalActionException, InvalidValueException}
+import model.cards.{Card, Deck}
 
 import java.util.Objects
 
@@ -58,6 +58,20 @@ class Player private {
   /** Shuffles the deck of the player. */
   def shuffleDeck(): Unit = {
     _deck.shuffle()
+  }
+
+  /** Draws a card from the deck of the player.
+    *
+    * @return The card drawn.
+    * @throws IllegalActionException If the deck is empty.
+    */
+  def drawCard(): Card = {
+    if (_deck.size == 0) {
+      throw new IllegalActionException("Cannot draw a card from an empty deck.")
+    }
+    val card = _deck.cards.head
+    _deck -= card
+    card
   }
 
   // region: Equals, hashCode, toString

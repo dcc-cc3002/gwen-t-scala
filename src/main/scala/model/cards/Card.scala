@@ -1,6 +1,8 @@
 package cl.uchile.dcc.gwent
 package model.cards
 
+import cl.uchile.dcc.gwent.model.Copyable
+
 import java.util.Objects
 
 /** A class that represents a card in the game.
@@ -16,7 +18,7 @@ import java.util.Objects
   * @since 1.0
   * @version 1.0
   */
-class Card(val name: String, val range: Int, val strength: Int) {
+class Card(val name: String, val range: Int, val strength: Int) extends Copyable {
   // region : toString, equals, hashCode
   override def toString: String =
     s"Card(name=$name, range=$range, strength=$strength)"
@@ -31,4 +33,7 @@ class Card(val name: String, val range: Int, val strength: Int) {
 
   override def hashCode(): Int = Objects.hash(classOf[Card], name, range, strength)
   // endregion
+
+  /** Returns a copy of the object. */
+  override def copy(): Card = new Card(name, range, strength)
 }

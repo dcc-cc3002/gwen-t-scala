@@ -1,6 +1,8 @@
 package cl.uchile.dcc.gwent
 package model.cards
 
+import model.Copyable
+
 import scala.util.Random
 
 /** A deck of cards.
@@ -11,7 +13,7 @@ import scala.util.Random
   * @since 1.0
   * @version 1.0
   */
-class Deck(val random: Random) {
+class Deck(val random: Random) extends Copyable {
   private var _cards: List[Card] = List()
 
   /** Creates a new deck with the given cards.
@@ -31,7 +33,9 @@ class Deck(val random: Random) {
   def cards: List[Card] = _cards
   // endregion
 
-  def copy(): Deck = new Deck(_cards)
+  def copy(): Deck = {
+    new Deck(_cards.map(_.copy()), random)
+  }
 
   def shuffle(): Unit = {
     _cards = random.shuffle(_cards)

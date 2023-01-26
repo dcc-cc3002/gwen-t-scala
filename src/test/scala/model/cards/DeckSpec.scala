@@ -8,7 +8,7 @@ class DeckSpec extends AbstractGwentSpec {
   private var deck: Deck = _
 
   before {
-    initCards()
+    createCards()
     emptyDeck = new Deck(Random)
     deck = new Deck(cards.toList)
   }
