@@ -3,6 +3,7 @@ package exceptions
 
 /** This error is raised when an illegal action is attempted.
   *
+  * @param description A description of the error.
   * @constructor Creates a new `IllegalActionException` with a `description` of the
   * error.
   *

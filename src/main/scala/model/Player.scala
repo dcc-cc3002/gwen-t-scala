@@ -5,6 +5,7 @@ import exceptions.{IllegalActionException, InvalidValueException}
 import model.cards.{Card, Deck}
 
 import java.util.Objects
+import scala.collection.mutable
 
 /** A class that holds the information of a player.
   *
@@ -13,34 +14,34 @@ import java.util.Objects
   * @since 1.0
   * @version 1.0
   */
-class Player private {
-  private var _gemCounter: Int = 0
-  private var _name: String = _
+class Player private(val name: String, val battlefield: Battlefield) {
+  private var _gemCounter: Int = 2
   private var _deck: Deck = _
+  private var _hand: List[Card] = List()
 
   /** Creates a new player with a name and a deck.
     *
     * @param name The name of the player.
     * @param deck The deck of the player.
     */
-  def this(name: String, deck: Deck) = {
-    this()
+  def this(name: String, deck: Deck, battlefield: Battlefield) = {
+    this(name, battlefield)
     if (deck.size != 25) { // Is it correct for the size restriction to be checked by the player?
       throw new InvalidValueException("The deck must start with 25 cards.")
     }
-    _name = name
     _deck = deck
   }
 
   // region : Properties
-  /** Returns the name of the player. */
-  def name: String = _name
 
   /** Returns a copy of the deck of the player. */
   def deck: Deck = _deck.copy()
 
   /** Returns the number of rounds won by the player. */
   def gemCounter: Int = _gemCounter
+
+  /** Returns a copy of the hand of the player. */
+  def hand: List[Card] = _hand.map(_.copy())
 
   /** Sets the number of rounds won by the player.
     *
@@ -60,6 +61,20 @@ class Player private {
     _deck.shuffle()
   }
 
+  /** Plays a card from the hand of the player.
+    *
+    * @param card The card to play.
+    * @return The cards that were played.
+    * @throws IllegalActionException If the card is not in the hand of the player.
+    */
+  def playCard(card: Card): Unit = {
+    if (!_hand.contains(card)) {
+      throw new IllegalActionException("Cannot play a card that is not in the hand.")
+    }
+    _hand = _hand.filterNot(_ == card)
+    battlefield.play(card)
+  }
+
   /** Draws a card from the deck of the player.
     *
     * @return The card drawn.
@@ -71,6 +86,7 @@ class Player private {
     }
     val card = _deck.cards.head
     _deck -= card
+    _hand = card :: _hand
     card
   }
 

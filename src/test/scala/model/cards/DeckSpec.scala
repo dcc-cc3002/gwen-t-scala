@@ -46,6 +46,7 @@ class DeckSpec extends AbstractGwentSpec {
     for (i <- cards.indices) {
       deck -= cards(i)
       deck.size should be(cards.size - i - 1)
+      deck.cards should contain theSameElementsAs cards.drop(i + 1)
     }
     deck.cards should be(empty)
   }

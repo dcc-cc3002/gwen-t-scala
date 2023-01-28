@@ -13,7 +13,7 @@ import scala.util.Random
   * @since 1.0
   * @version 1.0
   */
-class Deck(val random: Random) extends Copyable {
+class Deck(private val random: Random) extends Copyable {
   private var _cards: List[Card] = List()
 
   /** Creates a new deck with the given cards.
@@ -37,6 +37,9 @@ class Deck(val random: Random) extends Copyable {
     new Deck(_cards.map(_.copy()), random)
   }
 
+  /**
+   * Shuffles the deck.
+   */
   def shuffle(): Unit = {
     _cards = random.shuffle(_cards)
   }

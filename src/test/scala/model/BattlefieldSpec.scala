@@ -7,7 +7,7 @@ class BattlefieldSpec extends AbstractGwentSpec {
   private var battlefield: Battlefield = _
 
   before {
-    battlefield = new Battlefield(createPlayer("Player 1", createCards()))
+    battlefield = new Battlefield()
   }
 
   test("A battlefield is created with 0 cards in all rows") {

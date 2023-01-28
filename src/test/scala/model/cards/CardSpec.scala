@@ -50,4 +50,14 @@ class CardSpec extends AbstractGwentSpec {
     val otherCard = new Card(name, range, 2)
     card.hashCode() should not be otherCard.hashCode()
   }
+
+    test("A card can be copied") {
+        val otherCard = card.copy()
+        card should be(otherCard)
+    }
+
+    test("A card can be copied and the copy is not the same object") {
+        val otherCard = card.copy()
+        card should not be theSameInstanceAs(otherCard)
+    }
 }

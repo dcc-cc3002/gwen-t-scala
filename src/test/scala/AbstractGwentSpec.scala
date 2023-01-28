@@ -1,7 +1,7 @@
 package cl.uchile.dcc.gwent
 
+import model.{Battlefield, Player}
 import model.cards.{Card, Deck}
-import model.Player
 
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.BeforeAndAfter
@@ -30,8 +30,6 @@ class AbstractGwentSpec
 
   /** Initializes the player used in the tests.
     */
-  def createPlayer(name: String, cards: List[Card]): Player = {
-    val deck = new Deck(cards)
-    new Player(name, deck)
-  }
+  def createPlayer(name: String, cards: List[Card]): Player =
+    new Player(name, new Deck(cards), new Battlefield)
 }
