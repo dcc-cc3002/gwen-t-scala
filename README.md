@@ -8,10 +8,8 @@ This work is licensed under a
 Context
 -------
 
-This project's goal is to create a (simplified) clone of the _Gwent_'s combat, a game developed
-by [_Square Enix_](https://www.square-enix.com)
-Broadly speaking for the combat the player has a group of characters to control and a group of
-enemies controlled by the computer.
+This project's goal is to create a (simplified) clone of the 
+[_Gwent_](https://www.playgwent.com/en)card game developed by [_CD PROJEKT RED_](https://cdprojektred.com/en/)
 
 ---
 
